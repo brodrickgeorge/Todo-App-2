@@ -1,4 +1,5 @@
 import { StatusBar } from "expo-status-bar";
+
 import React, { useState } from "react";
 import {
   Alert,
@@ -6,24 +7,21 @@ import {
   Keyboard,
   SafeAreaView,
   StyleSheet,
-  Text,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-
 import AddTodo from "./components/AddTodo";
 import Header from "./components/Header";
 import TodoItem from "./components/TodoItem";
 
 export default function App() {
   const [todos, setTodos] = useState([
-    { text: "Go shopping.", key: "1" },
-    { text: "Walk dog.", key: "2" },
-    { text: "Take out Trash", key: "3" },
+    { text: "Go Shopping", key: "1" },
+    { text: "Take out dog", key: "2" },
+    { text: "Learn to code", key: "3" },
   ]);
 
   const handlePress = (key) => {
-    console.log(key);
     setTodos((prevTodos) => {
       return prevTodos.filter((todo) => todo.key != key);
     });
@@ -35,14 +33,18 @@ export default function App() {
         return [{ text: text, key: Math.random().toString() }, ...prevTodos];
       });
     } else {
-      Alert.alert("Oops!", "Todo must be more than 3 characters long!", [
+      Alert.alert("Oops!", "Todos must be greater than 3 characters!", [
         { text: "Understood!" },
       ]);
     }
   };
 
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+    <TouchableWithoutFeedback
+      onPress={() => {
+        Keyboard.dismiss();
+      }}
+    >
       <SafeAreaView style={styles.container}>
         <Header />
         <View style={styles.content}>
@@ -51,9 +53,9 @@ export default function App() {
             <FlatList
               style={styles.list}
               data={todos}
-              renderItem={({ item }) => (
-                <TodoItem handlePress={handlePress} item={item} />
-              )}
+              renderItem={({ item }) => {
+                return <TodoItem handlePress={handlePress} item={item} />;
+              }}
             />
           </View>
         </View>

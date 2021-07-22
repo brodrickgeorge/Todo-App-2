@@ -1,24 +1,25 @@
 import React from "react";
-
-import { Text, StyleSheet, SafeAreaView, View } from "react-native";
+import { StyleSheet, View, Text, SafeAreaView } from "react-native";
 
 export default function Header() {
   return (
-    <SafeAreaView>
-      <View style={styles.container}>
-        <Text style={styles.item}>Todos</Text>
-      </View>
+    <SafeAreaView style={styles.header}>
+      <Text style={styles.title}>My Todos</Text>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 24,
-    alignItems: "center",
+  header: {
+    height: 80,
+    padding: 38,
     backgroundColor: "coral",
+    justifyContent: "center",
   },
-  item: {
+  title: {
+    textAlign: "center",
+    color: "#fff",
     fontSize: 20,
+    fontWeight: "bold",
   },
 });
