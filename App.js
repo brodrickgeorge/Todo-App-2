@@ -1,7 +1,17 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import {
+  Alert,
+  FlatList,
+  Keyboard,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
 
+import AddTodo from "./components/AddTodo";
 import Header from "./components/Header";
 import TodoItem from "./components/TodoItem";
 
@@ -12,23 +22,50 @@ export default function App() {
     { text: "Take out Trash", key: "3" },
   ]);
 
+  const handlePress = (key) => {
+    console.log(key);
+    setTodos((prevTodos) => {
+      return prevTodos.filter((todo) => todo.key != key);
+    });
+  };
+
+  const handleSubmit = (text) => {
+    if (text.length > 3) {
+      setTodos((prevTodos) => {
+        return [{ text: text, key: Math.random().toString() }, ...prevTodos];
+      });
+    } else {
+      Alert.alert("Oops!", "Todo must be more than 3 characters long!", [
+        { text: "Understood!" },
+      ]);
+    }
+  };
+
   return (
-    <View style={styles.container}>
-      <Header />
-      <View style={styles.content}>
-        <FlatList
-          style={styles.list}
-          data={todos}
-          renderItem={({ item }) => <TodoItem item={item} />}
-        />
-      </View>
-      <StatusBar style="auto" />
-    </View>
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <SafeAreaView style={styles.container}>
+        <Header />
+        <View style={styles.content}>
+          <AddTodo handleSubmit={handleSubmit} />
+          <View style={styles.content}>
+            <FlatList
+              style={styles.list}
+              data={todos}
+              renderItem={({ item }) => (
+                <TodoItem handlePress={handlePress} item={item} />
+              )}
+            />
+          </View>
+        </View>
+        <StatusBar style="auto" />
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: "#fff",
   },
   content: {
